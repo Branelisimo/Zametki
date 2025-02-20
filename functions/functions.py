@@ -1,88 +1,117 @@
+# Импорт библиотеки tkinter
 import tkinter as tk
 from tkinter import messagebox
 
-# Словарь для хранения заметок (ID: текст заметки)
-notes = {}
+# Глобальная переменная для хранения заметок (список или словарь)
+notes = []
 
-# Функция для создания новой заметки
-def create_note():
-    note_id = len(notes) + 1  # Простой ID для заметки
-    notes[note_id] = ""  # Создаем пустую заметку
-    update_notes_list()  # Обновляем список заметок
-    show_note(note_id)  # Открываем созданную заметку для редактирования
+def add_note():
+    """
+    Создает окно для добавления новой заметки и сохраняет её в список.
 
-# Функция для сохранения заметки
-def save_note():
-    selected_id = get_selected_note_id()
-    if selected_id is not None:
-        text = note_text.get("1.0", tk.END).strip()  # Получаем текст из текстового поля
-        notes[selected_id] = text  # Сохраняем текст в словаре
-        messagebox.showinfo("Сохранено", "Заметка успешно сохранена!")
-    else:
-        messagebox.showwarning("Ошибка", "Выберите заметку для сохранения")
+    Открывает новое окно с текстовым полем и кнопкой "Сохранить". При нажатии на кнопку текст заметки
+    добавляется в глобальный список `notes` вместе с текущей датой, после чего список обновляется.
 
-# Функция для удаления заметки
-def delete_note():
-    selected_id = get_selected_note_id()
-    if selected_id is not None:
-        del notes[selected_id]  # Удаляем заметку из словаря
-        update_notes_list()  # Обновляем список заметок
-        clear_note_view()  # Очищаем поле просмотра заметки
-    else:
-        messagebox.showwarning("Ошибка", "Выберите заметку для удаления")
+    .. note:: Если текст заметки пустой, отображается предупреждение.
+    """
+    # Создать окно для ввода заметки
+    note_window = tk.Toplevel()
+    note_window.title("Новая заметка")
+    
+    # Добавить текстовое поле для ввода
+    note_text = tk.Text(note_window, height=10, width=50)
+    note_text.pack()
+    
+    def save_note():
+        """
+        Сохраняет введённую заметку и обновляет отображение.
 
-# Функция для отображения выбранной заметки
-def show_note(note_id):
-    note_text.delete("1.0", tk.END)  # Очищаем текстовое поле
-    note_text.insert(tk.END, notes.get(note_id, ""))  # Вставляем текст заметки
+        Извлекает текст из текстового поля, проверяет его на пустоту и добавляет в список `notes`.
+        После этого обновляет отображение заметок и закрывает окно.
+        """
+        content = note_text.get("1.0", tk.END).strip()
+        if content:
+            notes.append({"text": content, "date": "текущая дата"})
+            update_notes_display()
+            note_window.destroy()
+        else:
+            messagebox.showwarning("Ошибка", "Заметка не может быть пустой")
+    
+    # Добавить кнопку "Сохранить"
+    save_button = tk.Button(note_window, text="Сохранить", command=save_note)
+    save_button.pack()
 
-# Функция для получения ID выбранной заметки
-def get_selected_note_id():
-    selection = notes_list.curselection()  # Получаем индекс выбранного элемента
-    if selection:
-        index = selection[0]
-        note_ids = list(notes.keys())
-        return note_ids[index]  # Возвращаем ID заметки
-    return None
+def update_notes_display():
+    """
+    Обновляет отображение списка заметок в основном окне.
 
-# Функция для обновления списка заметок
-def update_notes_list():
-    notes_list.delete(0, tk.END)  # Очищаем список
-    for note_id, note_content in notes.items():
-        notes_list.insert(tk.END, f"Заметка {note_id}: {note_content[:20]}...")  # Добавляем краткое описание
+    Очищает текущий фрейм с заметками и отображает все заметки из списка `notes` в виде кратких
+    меток. Каждая метка кликабельна для просмотра полной заметки.
 
-# Функция для очистки поля просмотра заметки
-def clear_note_view():
-    note_text.delete("1.0", tk.END)
+    .. seealso:: :func:`view_note`
+    """
+    for widget in notes_frame.winfo_children():
+        widget.destroy()
+    
+    for index, note in enumerate(notes):
+        note_label = tk.Label(notes_frame, text=note["text"][:50] + "...", anchor="w")
+        note_label.pack(fill="x")
+        note_label.bind("<Button-1>", lambda e, i=index: view_note(i))
 
-# Создание главного окна
-root = tk.Tk()
-root.title("Приложение 'Заметки'")
-root.geometry("600x400")
+def view_note(index):
+    """
+    Отображает полное содержание заметки и предоставляет возможность её удаления.
 
-# Левая панель: список заметок
-notes_list = tk.Listbox(root, width=30, selectmode=tk.SINGLE)
-notes_list.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
+    :param int index: Индекс заметки в списке `notes`.
+    :return: None
 
-# Кнопки управления
-button_frame = tk.Frame(root)
-button_frame.pack(side=tk.TOP, pady=10)
+    Открывает окно с полным текстом заметки в режиме "только чтение" и кнопкой "Удалить".
+    При нажатии на кнопку заметка удаляется из списка, а отображение обновляется.
+    """
+    view_window = tk.Toplevel()
+    view_window.title("Просмотр заметки")
+    
+    note_text = tk.Text(view_window, height=10, width=50)
+    note_text.insert("1.0", notes[index]["text"])
+    note_text.config(state="disabled")
+    note_text.pack()
+    
+    def delete_note():
+        """
+        Удаляет заметку из списка и обновляет отображение.
 
-create_button = tk.Button(button_frame, text="Создать", command=create_note)
-create_button.pack(side=tk.LEFT, padx=5)
+        Удаляет заметку по указанному индексу из списка `notes`, обновляет интерфейс и закрывает окно.
+        """
+        notes.pop(index)
+        update_notes_display()
+        view_window.destroy()
+    
+    delete_button = tk.Button(view_window, text="Удалить", command=delete_note)
+    delete_button.pack()
 
-save_button = tk.Button(button_frame, text="Сохранить", command=save_note)
-save_button.pack(side=tk.LEFT, padx=5)
+def start_app():
+    """
+    Инициализирует и запускает основное окно приложения "Zametki".
 
-delete_button = tk.Button(button_frame, text="Удалить", command=delete_note)
-delete_button.pack(side=tk.LEFT, padx=5)
+    Создает главное окно с кнопкой для добавления заметок и фреймом для их отображения.
+    Запускает главный цикл приложения.
 
-# Правая панель: текстовое поле для редактирования заметки
-note_text = tk.Text(root, width=50, height=20)
-note_text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+    :global root: Главное окно приложения.
+    :global notes_frame: Фрейм для отображения заметок.
+    """
+    global root, notes_frame
+    root = tk.Tk()
+    root.title("Zametki")
+    root.geometry("400x500")
+    
+    add_button = tk.Button(root, text="Добавить заметку", command=add_note)
+    add_button.pack(pady=10)
+    
+    notes_frame = tk.Frame(root)
+    notes_frame.pack(fill="both", expand=True)
+    
+    update_notes_display()
+    root.mainloop()
 
-# Привязка события выбора заметки
-notes_list.bind("<<ListboxSelect>>", lambda event: show_note(get_selected_note_id()))
-
-# Запуск приложения
-root.mainloop()
+if __name__ == "__main__":
+    root.mainloop()

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="ru" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>main &#8212; документация Zametki v0.4</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=02c2cb0f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=cd1d70c9"></script>
+    <link rel="index" title="Алфавитный указатель" href="../genindex.html" />
+    <link rel="search" title="Поиск" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Исходный код main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="kn">import</span> <span class="n">messagebox</span>
+
+
+<div class="viewcode-block" id="login">
+<a class="viewcode-back" href="../main.html#main.login">[документация]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">login</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Функция обработки нажатия кнопки &quot;Войти&quot;.</span>
+
+<span class="sd">    Проверяет введенные пользователем логин и пароль.</span>
+<span class="sd">    Если данные верны, отображает сообщение об успешной авторизации.</span>
+<span class="sd">    Если данные неверны, показывает ошибку.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">username_entry</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># Получение значения из поля логина</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">password_entry</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># Получение значения из поля пароля</span>
+
+    <span class="k">if</span> <span class="n">username</span> <span class="o">==</span> <span class="s2">&quot;admin&quot;</span> <span class="ow">and</span> <span class="n">password</span> <span class="o">==</span> <span class="s2">&quot;12345&quot;</span><span class="p">:</span>
+        <span class="c1"># Отображение успешного входа</span>
+        <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="s2">&quot;Успешно&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Добро пожаловать, </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Отображение ошибки при неверных данных</span>
+        <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Ошибка&quot;</span><span class="p">,</span> <span class="s2">&quot;Неверный логин или пароль&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Создание основного окна приложения</span>
+<span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Создание главного окна приложения с использованием библиотеки Tkinter.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    root (Tk): Основное окно приложения.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Приложение &#39;Заметки&#39;&quot;</span><span class="p">)</span>  <span class="c1"># Установка заголовка окна</span>
+<span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;300x250&quot;</span><span class="p">)</span>  <span class="c1"># Установка размеров окна</span>
+
+<span class="c1"># Добавление заголовка</span>
+<span class="n">label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Авторизация&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Создание метки (Label) для заголовка авторизации.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    label (Label): Метка с текстом &quot;Авторизация&quot;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># Размещение метки на экране</span>
+
+<span class="c1"># Поле для ввода логина</span>
+<span class="n">username_label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Логин:&quot;</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Создание метки для поля ввода логина.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    username_label (Label): Метка с текстом &quot;Логин:&quot;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">username_label</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>  <span class="c1"># Размещение метки на экране</span>
+
+<span class="n">username_entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Создание поля ввода для логина.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    username_entry (Entry): Поле ввода для логина.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">username_entry</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># Размещение поля ввода на экране</span>
+
+<span class="c1"># Поле для ввода пароля</span>
+<span class="n">password_label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Пароль:&quot;</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Создание метки для поля ввода пароля.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    password_label (Label): Метка с текстом &quot;Пароль:&quot;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">password_label</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>  <span class="c1"># Размещение метки на экране</span>
+
+<span class="n">password_entry</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Создание поля ввода для пароля с маскировкой символов.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    password_entry (Entry): Поле ввода для пароля.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">password_entry</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># Размещение поля ввода на экране</span>
+
+<span class="c1"># Кнопка &quot;Войти&quot;</span>
+<span class="n">login_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Войти&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">login</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Создание кнопки &quot;Войти&quot; с привязкой функции `login`.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    login_button (Button): Кнопка для выполнения авторизации.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">login_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>  <span class="c1"># Размещение кнопки на экране</span>
+
+<span class="c1"># Запуск главного цикла приложения</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Запуск главного цикла обработки событий Tkinter.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Zametki</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Навигация</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../main.html">Модуль main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions.html">Модуль functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ui.html">Модуль ui</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Код модуля</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Ruslan.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

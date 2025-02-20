@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html lang="ru" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>functions &#8212; документация Zametki v0.4</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=02c2cb0f"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=cd1d70c9"></script>
+    <link rel="index" title="Алфавитный указатель" href="../genindex.html" />
+    <link rel="search" title="Поиск" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Исходный код functions</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Импорт библиотеки tkinter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="kn">import</span> <span class="n">messagebox</span>
+
+<span class="c1"># Глобальная переменная для хранения заметок (список или словарь)</span>
+<span class="n">notes</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="add_note">
+<a class="viewcode-back" href="../functions.html#functions.add_note">[документация]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_note</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Создает окно для добавления новой заметки и сохраняет её в список.</span>
+
+<span class="sd">    Открывает новое окно с текстовым полем и кнопкой &quot;Сохранить&quot;. При нажатии на кнопку текст заметки</span>
+<span class="sd">    добавляется в глобальный список `notes` вместе с текущей датой, после чего список обновляется.</span>
+
+<span class="sd">    .. note:: Если текст заметки пустой, отображается предупреждение.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Создать окно для ввода заметки</span>
+    <span class="n">note_window</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">()</span>
+    <span class="n">note_window</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Новая заметка&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Добавить текстовое поле для ввода</span>
+    <span class="n">note_text</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">note_window</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">note_text</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_note</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Сохраняет введённую заметку и обновляет отображение.</span>
+
+<span class="sd">        Извлекает текст из текстового поля, проверяет его на пустоту и добавляет в список `notes`.</span>
+<span class="sd">        После этого обновляет отображение заметок и закрывает окно.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">note_text</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;текущая дата&quot;</span><span class="p">})</span>
+            <span class="n">update_notes_display</span><span class="p">()</span>
+            <span class="n">note_window</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messagebox</span><span class="o">.</span><span class="n">showwarning</span><span class="p">(</span><span class="s2">&quot;Ошибка&quot;</span><span class="p">,</span> <span class="s2">&quot;Заметка не может быть пустой&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Добавить кнопку &quot;Сохранить&quot;</span>
+    <span class="n">save_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">note_window</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Сохранить&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">save_note</span><span class="p">)</span>
+    <span class="n">save_button</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="update_notes_display">
+<a class="viewcode-back" href="../functions.html#functions.update_notes_display">[документация]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_notes_display</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Обновляет отображение списка заметок в основном окне.</span>
+
+<span class="sd">    Очищает текущий фрейм с заметками и отображает все заметки из списка `notes` в виде кратких</span>
+<span class="sd">    меток. Каждая метка кликабельна для просмотра полной заметки.</span>
+
+<span class="sd">    .. seealso:: :func:`view_note`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="n">notes_frame</span><span class="o">.</span><span class="n">winfo_children</span><span class="p">():</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+    
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">note</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">notes</span><span class="p">):</span>
+        <span class="n">note_label</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">notes_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">note</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">][:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">note_label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="n">note_label</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button-1&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">:</span> <span class="n">view_note</span><span class="p">(</span><span class="n">i</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="view_note">
+<a class="viewcode-back" href="../functions.html#functions.view_note">[документация]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">view_note</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Отображает полное содержание заметки и предоставляет возможность её удаления.</span>
+
+<span class="sd">    :param int index: Индекс заметки в списке `notes`.</span>
+<span class="sd">    :return: None</span>
+
+<span class="sd">    Открывает окно с полным текстом заметки в режиме &quot;только чтение&quot; и кнопкой &quot;Удалить&quot;.</span>
+<span class="sd">    При нажатии на кнопку заметка удаляется из списка, а отображение обновляется.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">view_window</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">()</span>
+    <span class="n">view_window</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Просмотр заметки&quot;</span><span class="p">)</span>
+    
+    <span class="n">note_text</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="n">view_window</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">note_text</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span> <span class="n">notes</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+    <span class="n">note_text</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s2">&quot;disabled&quot;</span><span class="p">)</span>
+    <span class="n">note_text</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_note</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Удаляет заметку из списка и обновляет отображение.</span>
+
+<span class="sd">        Удаляет заметку по указанному индексу из списка `notes`, обновляет интерфейс и закрывает окно.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">notes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">update_notes_display</span><span class="p">()</span>
+        <span class="n">view_window</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+    
+    <span class="n">delete_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">view_window</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Удалить&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">delete_note</span><span class="p">)</span>
+    <span class="n">delete_button</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="start_app">
+<a class="viewcode-back" href="../functions.html#functions.start_app">[документация]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">start_app</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Инициализирует и запускает основное окно приложения &quot;Zametki&quot;.</span>
+
+<span class="sd">    Создает главное окно с кнопкой для добавления заметок и фреймом для их отображения.</span>
+<span class="sd">    Запускает главный цикл приложения.</span>
+
+<span class="sd">    :global root: Главное окно приложения.</span>
+<span class="sd">    :global notes_frame: Фрейм для отображения заметок.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">root</span><span class="p">,</span> <span class="n">notes_frame</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Zametki&quot;</span><span class="p">)</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;400x500&quot;</span><span class="p">)</span>
+    
+    <span class="n">add_button</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Добавить заметку&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">add_note</span><span class="p">)</span>
+    <span class="n">add_button</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    
+    <span class="n">notes_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">notes_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">update_notes_display</span><span class="p">()</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Zametki</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Навигация</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../main.html">Модуль main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions.html">Модуль functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ui.html">Модуль ui</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Код модуля</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Ruslan.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
